@@ -8,7 +8,7 @@ import Maksimum.Pokolenie;
 public class Pokolenie_Test {
     public static void main(String[] args) {
 
-        Pokolenie test = new Pokolenie();
+       // Pokolenie test = new Pokolenie();
         /*
         test.LosujPokolenie(10);
         test.PrintPokolenie();
@@ -22,7 +22,7 @@ public class Pokolenie_Test {
         System.out.println("Po rekombinacji");
         test.PrintPokolenie();
 */
-
+/*
         test.LosujPokolenie(20);
 
 
@@ -30,16 +30,28 @@ public class Pokolenie_Test {
             test.LiczPrzystosowanie("(x^2+1)");
             test.LiczFunkcjePrzetrwania();
            test = test.Krzyzowanie();
+        }*/
 
 
 
+    Szukaj(160, "(x^2+1)", 20, 0.01);
+
+
+
+
+    }
+
+    public static void Szukaj(int ilosc_pokolen, String wzor, int wielkoscPokolenia, double SzansaNaMutacje){
+        Pokolenie nowe = new Pokolenie();
+
+        nowe.LosujPokolenie(wielkoscPokolenia);
+        for (int i = 0; i < ilosc_pokolen; i++) {
+            nowe.LiczPrzystosowanie(wzor);
+            nowe.LiczFunkcjePrzetrwania();
+            nowe = nowe.Krzyzowanie();
         }
-
-
-
-        test.Najlepszy();
-
-
+        nowe.Najlepszy();
+        nowe.Mutacja(SzansaNaMutacje);
 
     }
 

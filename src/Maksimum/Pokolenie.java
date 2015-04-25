@@ -26,7 +26,7 @@ public class Pokolenie {
 
     }
 
-    public void DodajOsobnika(String osobnik){
+    public void DodajOsobnika(String osobnik) {
         this.Lista_osobnikow.add(osobnik);
     }
 
@@ -51,7 +51,7 @@ public class Pokolenie {
             //String osobnik to funkcja stworzona na podstawie wartosci z Listy_pokolenia i string Funkcji
             String osobnik = funkcja.replaceAll("x", Integer.toString(Integer.parseUnsignedInt(this.Lista_osobnikow.get(i), 2)));
             Lista_wartosci.add(i, wyrazenie.evaluate(osobnik));
-            System.out.println(osobnik);
+
         }
 
 
@@ -87,14 +87,14 @@ public class Pokolenie {
         int lenght = this.Lista_wartosci.size();
 
         for (int i = 0; i < lenght; i++) {
-            System.out.println("Wartosci: " + Lista_wartosci.get(i));
+         //   System.out.println("Wartosci: " + Lista_wartosci.get(i));
         }
     }
 
     public void PrintSzansaPrzetrwania() {
         int lenght = this.Lista_przystosowania.size();
         for (int i = 0; i < lenght; i++) {
-            System.out.println("Szansa przetrwania: " + Lista_przystosowania.get(i));
+         //   System.out.println("Szansa przetrwania: " + Lista_przystosowania.get(i));
         }
 
 
@@ -150,13 +150,10 @@ public class Pokolenie {
             // po przejsciu calej listy i wybraniu najbliszego liczby wyloswanej nalezy go dodac na liste oczekujacych do krzyzowania i losowac nastepne
 
 
-            System.out.println("wylosowana wartosc:" + wylosowana);
+           // System.out.println("wylosowana wartosc: " + wylosowana);
         }
 
-        for (int dupa = 0; dupa < OsobnikiDoKrzyzowania.size(); dupa++) {
 
-            System.out.println("Osobniki wygrane: " + OsobnikiDoKrzyzowania.get(dupa));
-        }
         Pokolenie nowe = RekombinacjaPopulacji(OsobnikiDoKrzyzowania, lenth);
         System.out.println("Nowe pokolenie");
         nowe.PrintPokolenie();
@@ -179,38 +176,82 @@ public class Pokolenie {
     public Pokolenie RekombinacjaPopulacji(ArrayList<Integer> OsobnikiDoKrzyzowania, int WielkoscPopulacji) {
         int lenght = OsobnikiDoKrzyzowania.size();
         Pokolenie nowe = new Pokolenie();
-        for (int i = 0; (i < lenght); i= i+2) {
+        for (int i = 0; (i < lenght); i = i + 2) {
             nowe.DodajOsobnika(Lista_osobnikow.get(OsobnikiDoKrzyzowania.get(i)));
-            nowe.DodajOsobnika(Lista_osobnikow.get(OsobnikiDoKrzyzowania.get(i+1)));
-            nowe.RekokombinacjaOsobnikow(i,(i+1));
+            nowe.DodajOsobnika(Lista_osobnikow.get(OsobnikiDoKrzyzowania.get(i + 1)));
+            nowe.RekokombinacjaOsobnikow(i, (i + 1));
 
         }
         nowe.LosujPokolenie(WielkoscPopulacji - nowe.Lista_osobnikow.size());
 
 
-
         return nowe;
     }
 
-    public void Najlepszy(){
-        this.LiczPrzystosowanie("(x^2 +1)");
+    public void Najlepszy() {
 
+        this.LiczPrzystosowanie("(x^2 +1)");
 
         int lenght = this.Lista_osobnikow.size();
         System.out.println(this.Lista_wartosci.get(1));
         double najwyszaWartoscOsobnika = 0;
-        int indexNajlepszego=0;
-        System.out.println("Lenght:"+lenght);
-        System.out.println("Wartosc przykaldowa: "+this.Lista_wartosci.get(7));
+        int indexNajlepszego = 0;
 
-        for(int i = 0; i < lenght; i++){
-            if(this.Lista_wartosci.get(i) > najwyszaWartoscOsobnika){
+
+
+        for (int i = 0; i < lenght; i++) {
+            if (this.Lista_wartosci.get(i) > najwyszaWartoscOsobnika) {
                 najwyszaWartoscOsobnika = this.Lista_wartosci.get(i);
                 indexNajlepszego = i;
             }
         }
-        System.out.println("Indeks najlepszego: "+indexNajlepszego);
-        System.out.println("Chromosom: " + (indexNajlepszego+1) + " Kod: " + this.Lista_osobnikow.get(indexNajlepszego) + " Wartosc: " + (Integer.parseUnsignedInt(this.Lista_osobnikow.get(indexNajlepszego), 2)));
+        System.out.println("Indeks najlepszego: " + indexNajlepszego);
+        System.out.println("Chromosom: " + (indexNajlepszego + 1) + " Kod: " + this.Lista_osobnikow.get(indexNajlepszego) + " Wartosc: " + (Integer.parseUnsignedInt(this.Lista_osobnikow.get(indexNajlepszego), 2)));
+    }
+
+    public void Mutacja(double SzansaNaMutacje) {
+
+        int SzansaWInt = (int) java.lang.Math.pow(SzansaNaMutacje, -1);
+
+
+
+
+        if (SzansaWInt > 100) {
+         //Nic nie rob
+        } else {
+            Random losowana = new Random();
+            if (1 == (SzansaWInt - losowana.nextInt(SzansaWInt))) {
+                System.out.println("Mutacja!");
+//Gdy dojdzie do mutacji
+
+
+                //Losowanie osobnika
+
+                Random generator = new Random();
+
+                int osobnik = (Lista_osobnikow.size()-1) -generator.nextInt(Lista_osobnikow.size()-1);
+                int wylosowana = (Lista_osobnikow.get(0).length()-1) - generator.nextInt(Lista_osobnikow.get(0).length()-1);
+
+                String tempL = Lista_osobnikow.get(osobnik).substring(0,wylosowana-1);
+
+                String tempP = Lista_osobnikow.get(osobnik).substring(wylosowana,Lista_osobnikow.get(0).length());
+
+                if(Lista_osobnikow.get(osobnik).substring(wylosowana).equals("1")){
+                    Lista_osobnikow.set(osobnik, tempL+"0"+tempP);
+
+                }else{
+                    Lista_osobnikow.set(osobnik, tempL+"1"+tempP);
+                }
+
+
+
+
+
+            }
+
+        }
+
+
     }
 
 
